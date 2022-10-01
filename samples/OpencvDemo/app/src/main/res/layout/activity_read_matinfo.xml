@@ -23,6 +23,26 @@
     android:layout_toRightOf="@id/select_image_btn"
     android:layout_alignParentTop="true"
     android:id="@+id/get_matInfo_btn"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="mat2Bitmap"
+        android:layout_toRightOf="@id/get_matInfo_btn"
+        android:layout_alignParentTop="true"
+        android:id="@+id/mat2BitmapDemo"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="DrawOnCanvas"
+        android:layout_below="@id/select_image_btn"
+        android:id="@+id/basicDrawOnCanvas"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="DrawOnMat"
+        android:layout_toRightOf="@id/basicDrawOnCanvas"
+        android:layout_below="@id/mat2BitmapDemo"
+        android:id="@+id/basicDrawOnMat"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

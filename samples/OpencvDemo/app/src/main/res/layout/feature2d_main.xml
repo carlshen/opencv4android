@@ -23,11 +23,46 @@
         android:layout_toRightOf="@id/select_image_btn"
         android:layout_alignParentTop="true"
         android:id="@+id/extract_feature_btn"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="特征提取1"
+        android:layout_toRightOf="@id/extract_feature_btn"
+        android:layout_alignParentTop="true"
+        android:id="@+id/convolution_btn1"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="特征提取2"
+        android:layout_below="@+id/select_image_btn"
+        android:layout_alignParentLeft="true"
+        android:id="@+id/convolution_btn2"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="特征提取3"
+        android:layout_toRightOf="@id/convolution_btn2"
+        android:layout_alignBottom="@+id/convolution_btn2"
+        android:id="@+id/convolution_btn3"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="特征提取4"
+        android:layout_toRightOf="@id/convolution_btn3"
+        android:layout_alignBottom="@+id/convolution_btn3"
+        android:id="@+id/convolution_btn4"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="特征提取5"
+        android:layout_toRightOf="@id/convolution_btn4"
+        android:layout_alignBottom="@+id/convolution_btn4"
+        android:id="@+id/convolution_btn5"/>
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="fitCenter"
-        android:layout_below="@id/select_image_btn"
+        android:layout_below="@id/convolution_btn2"
         android:layout_centerInParent="true"
         android:src="@drawable/lena"
         android:id="@+id/chapter6_imageView"/>

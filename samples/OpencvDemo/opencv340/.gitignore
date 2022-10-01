@@ -1,0 +1,7 @@
+/build
+/captures
+.externalNativeBuild
+.cxx/
+bin/
+gen/
+out/

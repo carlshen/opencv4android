@@ -3,13 +3,18 @@ package com.book.chapter.four;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import org.opencv.android.BaseLoaderCallback;
+import org.opencv.android.LoaderCallbackInterface;
+import org.opencv.android.OpenCVLoader;
 import org.opencv.android.Utils;
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
@@ -28,6 +33,22 @@ public class ConvolutionActivity extends AppCompatActivity implements View.OnCli
     private int REQUEST_CAPTURE_IMAGE = 1;
     private String TAG = "DEMO-OpenCV";
     private Uri fileUri;
+    private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
+        @Override
+        public void onManagerConnected(int status) {
+            switch (status) {
+                case LoaderCallbackInterface.SUCCESS:
+                {
+                    Log.i(TAG, "OpenCV loaded successfully");
+//                    mOpenCvCameraView.enableView();
+                } break;
+                default:
+                {
+                    super.onManagerConnected(status);
+                } break;
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +58,24 @@ public class ConvolutionActivity extends AppCompatActivity implements View.OnCli
         Button processBtn = (Button)this.findViewById(R.id.convolution_btn);
         selectBtn.setOnClickListener(this);
         processBtn.setOnClickListener(this);
+        ((Button) findViewById(R.id.convolution_btn1)).setOnClickListener(this);
+        ((Button) findViewById(R.id.convolution_btn2)).setOnClickListener(this);
+        ((Button) findViewById(R.id.convolution_btn3)).setOnClickListener(this);
+        ((Button) findViewById(R.id.convolution_btn4)).setOnClickListener(this);
+        ((Button) findViewById(R.id.convolution_btn5)).setOnClickListener(this);
+    }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        if (!OpenCVLoader.initDebug()) {
+            Log.d(TAG, "Internal OpenCV library not found. Using OpenCV Manager for initialization");
+            OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_3_0_0, this, mLoaderCallback);
+        } else {
+            Log.d(TAG, "OpenCV library found inside package. Using it!");
+            mLoaderCallback.onManagerConnected(LoaderCallbackInterface.SUCCESS);
+        }
     }
 
     @Override
@@ -49,6 +88,21 @@ public class ConvolutionActivity extends AppCompatActivity implements View.OnCli
             case R.id.convolution_btn:
                 blurImage(0);
                 break;
+            case R.id.convolution_btn1:
+                blurImage(1);
+                break;
+            case R.id.convolution_btn2:
+                blurImage(2);
+                break;
+            case R.id.convolution_btn3:
+                blurImage(3);
+                break;
+            case R.id.convolution_btn4:
+                blurImage(4);
+                break;
+            case R.id.convolution_btn5:
+                blurImage(5);
+                break;
             default:
                 break;
         }
@@ -56,7 +110,15 @@ public class ConvolutionActivity extends AppCompatActivity implements View.OnCli
 
     private void blurImage(int type) {
         // read image
-        Mat src = Imgcodecs.imread(fileUri.getPath());
+        Mat src;
+        if (fileUri == null) {
+            BitmapDrawable bitmapDrawable = (BitmapDrawable)getResources().getDrawable(R.drawable.facedetection);
+            Bitmap bitmap = bitmapDrawable.getBitmap();
+            src = new Mat();
+            Utils.bitmapToMat(bitmap, src);
+        } else {
+            src = Imgcodecs.imread(fileUri.getPath());
+        }
         if(src.empty()){
             return;
         }

@@ -3,14 +3,19 @@ package gloomyfish.opencvdemo;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import org.opencv.android.BaseLoaderCallback;
+import org.opencv.android.LoaderCallbackInterface;
+import org.opencv.android.OpenCVLoader;
 import org.opencv.android.Utils;
 import org.opencv.core.Mat;
 import org.opencv.core.Size;
@@ -23,6 +28,25 @@ public class CharpteFrist1Activity extends AppCompatActivity implements View.OnC
     private int REQUEST_CAPTURE_IMAGE = 1;
     private String TAG = "DEMO-OpenCV";
     private Uri fileUri;
+    private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
+        @Override
+        public void onManagerConnected(int status) {
+            switch (status) {
+                case LoaderCallbackInterface.SUCCESS:
+                {
+                    Log.d(TAG, "OpenCV loaded successfully");
+//                    mOpenCvCameraView.enableView();
+                }
+                break;
+                default:
+                {
+                    super.onManagerConnected(status);
+                    Log.e(TAG, "OpenCV loaded failed");
+                }
+                break;
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +61,19 @@ public class CharpteFrist1Activity extends AppCompatActivity implements View.OnC
 
         Button selectPicBtn = (Button)this.findViewById(R.id.take_pic_btn);
         selectPicBtn.setOnClickListener(this);
+    }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        if (!OpenCVLoader.initDebug()) {
+            Log.d(TAG, "Internal OpenCV library not found. Using OpenCV Manager for initialization");
+            OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_3_0_0, this, mLoaderCallback);
+        } else {
+            Log.d(TAG, "OpenCV library found inside package. Using it!");
+            mLoaderCallback.onManagerConnected(LoaderCallbackInterface.SUCCESS);
+        }
     }
 
     @Override
@@ -58,7 +95,15 @@ public class CharpteFrist1Activity extends AppCompatActivity implements View.OnC
     }
 
     private void convert2Gray() {
-        Mat src = Imgcodecs.imread(fileUri.getPath());
+        Mat src;
+        if (fileUri == null) {
+            BitmapDrawable bitmapDrawable = (BitmapDrawable)getResources().getDrawable(R.drawable.facedetection);
+            Bitmap bitmap = bitmapDrawable.getBitmap();
+            src = new Mat();
+            Utils.bitmapToMat(bitmap, src);
+        } else {
+            src = Imgcodecs.imread(fileUri.getPath());
+        }
         if(src.empty()) {
             return;
         }

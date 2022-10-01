@@ -6,13 +6,18 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import org.opencv.android.BaseLoaderCallback;
+import org.opencv.android.LoaderCallbackInterface;
+import org.opencv.android.OpenCVLoader;
 import org.opencv.android.Utils;
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
@@ -34,6 +39,26 @@ public class ReadMatinfoActivity extends AppCompatActivity implements View.OnCli
     private String TAG = "DEMO-OpenCV";
     private Uri fileUri;
 
+    private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
+        @Override
+        public void onManagerConnected(int status) {
+            switch (status) {
+                case LoaderCallbackInterface.SUCCESS:
+                {
+                    Log.d(TAG, "OpenCV loaded successfully");
+//                    mOpenCvCameraView.enableView();
+                }
+                break;
+                default:
+                {
+                    super.onManagerConnected(status);
+                    Log.e(TAG, "OpenCV loaded failed");
+                }
+                break;
+            }
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +67,22 @@ public class ReadMatinfoActivity extends AppCompatActivity implements View.OnCli
         Button getInfoBtn = (Button)this.findViewById(R.id.get_matInfo_btn);
         selectBtn.setOnClickListener(this);
         getInfoBtn.setOnClickListener(this);
+        ((Button) findViewById(R.id.mat2BitmapDemo)).setOnClickListener(this);
+        ((Button) findViewById(R.id.basicDrawOnCanvas)).setOnClickListener(this);
+        ((Button) findViewById(R.id.basicDrawOnMat)).setOnClickListener(this);
+    }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        if (!OpenCVLoader.initDebug()) {
+            Log.d(TAG, "Internal OpenCV library not found. Using OpenCV Manager for initialization");
+            OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_3_0_0, this, mLoaderCallback);
+        } else {
+            Log.d(TAG, "OpenCV library found inside package. Using it!");
+            mLoaderCallback.onManagerConnected(LoaderCallbackInterface.SUCCESS);
+        }
     }
 
     @Override
@@ -53,6 +94,15 @@ public class ReadMatinfoActivity extends AppCompatActivity implements View.OnCli
                 break;
             case R.id.get_matInfo_btn:
                 bitmap2MatDemo();
+                break;
+            case R.id.mat2BitmapDemo:
+                mat2BitmapDemo(1);
+                break;
+            case R.id.basicDrawOnCanvas:
+                basicDrawOnCanvas();
+                break;
+            case R.id.basicDrawOnMat:
+                basicDrawOnMat();
                 break;
             default:
                 break;
@@ -72,7 +122,15 @@ public class ReadMatinfoActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void mat2BitmapDemo(int index) {
-        Mat src = Imgcodecs.imread(fileUri.getPath());
+        Mat src;
+        if (fileUri == null) {
+            BitmapDrawable bitmapDrawable = (BitmapDrawable)getResources().getDrawable(R.drawable.facedetection);
+            Bitmap bitmap = bitmapDrawable.getBitmap();
+            src = new Mat();
+            Utils.bitmapToMat(bitmap, src);
+        } else {
+            src = Imgcodecs.imread(fileUri.getPath());
+        }
         int width = src.cols();
         int height = src.rows();
         Bitmap bm = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
@@ -116,7 +174,7 @@ public class ReadMatinfoActivity extends AppCompatActivity implements View.OnCli
         // 显示结果
         ImageView iv = (ImageView)this.findViewById(R.id.matInfo_imageView);
         iv.setImageBitmap(bm);
-        bm.recycle();
+//        bm.recycle();
     }
 
     private void basicDrawOnMat() {

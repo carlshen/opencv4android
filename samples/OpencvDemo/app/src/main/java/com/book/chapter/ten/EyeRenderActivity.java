@@ -6,8 +6,8 @@ import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Environment;
-import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -17,8 +17,11 @@ import android.view.WindowManager;
 
 import com.gloomyfish.opencv.plugin.FaceExtraLayer;
 
+import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.CameraBridgeViewBase;
 import org.opencv.android.JavaCameraView;
+import org.opencv.android.LoaderCallbackInterface;
+import org.opencv.android.OpenCVLoader;
 import org.opencv.android.Utils;
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
@@ -29,7 +32,6 @@ import org.opencv.core.Point;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.core.Size;
-import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.objdetect.CascadeClassifier;
 
@@ -57,7 +59,23 @@ public class EyeRenderActivity extends AppCompatActivity implements CameraBridge
     private CascadeClassifier eyeDetector;
     Mat leftEye_template;
     Mat rightEye_template;
-    private Mat gray = new Mat();
+    private Mat gray;
+    private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
+        @Override
+        public void onManagerConnected(int status) {
+            switch (status) {
+                case LoaderCallbackInterface.SUCCESS:
+                {
+                    Log.i(TAG, "OpenCV loaded successfully");
+//                    mOpenCvCameraView.enableView();
+                } break;
+                default:
+                {
+                    super.onManagerConnected(status);
+                } break;
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,6 +111,19 @@ public class EyeRenderActivity extends AppCompatActivity implements CameraBridge
             k2 = Imgproc.getStructuringElement(Imgproc.MORPH_ELLIPSE, new Size(10, 10), new Point(-1, -1));
         } catch (IOException ioe) {
             ioe.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        if (!OpenCVLoader.initDebug()) {
+            Log.d(TAG, "Internal OpenCV library not found. Using OpenCV Manager for initialization");
+            OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_3_0_0, this, mLoaderCallback);
+        } else {
+            Log.d(TAG, "OpenCV library found inside package. Using it!");
+            mLoaderCallback.onManagerConnected(LoaderCallbackInterface.SUCCESS);
         }
     }
 
@@ -167,6 +198,7 @@ public class EyeRenderActivity extends AppCompatActivity implements CameraBridge
             mNativeDetector.setMinFaceSize(mAbsoluteFaceSize);
             mNativeDetector.start();
         }
+        gray = new Mat();
         Imgproc.cvtColor(frame, gray, Imgproc.COLOR_RGBA2GRAY);
         Imgproc.equalizeHist(gray, gray);
         MatOfRect faces = new MatOfRect();
@@ -215,7 +247,7 @@ public class EyeRenderActivity extends AppCompatActivity implements CameraBridge
         // 级联分类器
         Mat leftEye = frame.submat(left_eye_roi);
         Mat rightEye = frame.submat(right_eye_roi);
-
+        gray = new Mat();
         eyeDetector.detectMultiScale(gray.submat(left_eye_roi), eyes, 1.15, 2, 0, new Size(30,30), new Size());
         Rect[] eyesArray = eyes.toArray();
         for(int i=0; i<eyesArray.length; i++) {
