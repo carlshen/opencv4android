@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -61,13 +62,16 @@ public class Feature2dMainActivity extends AppCompatActivity implements View.OnC
             switch (status) {
                 case LoaderCallbackInterface.SUCCESS:
                 {
-                    Log.i(TAG, "OpenCV loaded successfully");
+                    Log.d(TAG, "OpenCV loaded successfully");
 //                    mOpenCvCameraView.enableView();
-                } break;
+                }
+                break;
                 default:
                 {
                     super.onManagerConnected(status);
-                } break;
+                    Log.e(TAG, "OpenCV loaded failed");
+                }
+                break;
             }
         }
     };
@@ -153,7 +157,15 @@ public class Feature2dMainActivity extends AppCompatActivity implements View.OnC
     }
 
     private void extractFeatureImage(int section) {
-        Mat src = Imgcodecs.imread(fileUri.getPath());
+        Mat src;
+        if (fileUri == null) {
+            BitmapDrawable bitmapDrawable = (BitmapDrawable)getResources().getDrawable(R.drawable.lena);
+            Bitmap bitmap = bitmapDrawable.getBitmap();
+            src = new Mat();
+            Utils.bitmapToMat(bitmap, src);
+        } else {
+            src = Imgcodecs.imread(fileUri.getPath());
+        }
         if(src.empty()){
             return;
         }

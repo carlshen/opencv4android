@@ -3,6 +3,7 @@ package com.book.chapter.nine;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
@@ -39,13 +40,16 @@ public class BeautyFaceActivity extends AppCompatActivity implements View.OnClic
             switch (status) {
                 case LoaderCallbackInterface.SUCCESS:
                 {
-                    Log.i(TAG, "OpenCV loaded successfully");
+                    Log.d(TAG, "OpenCV loaded successfully");
 //                    mOpenCvCameraView.enableView();
-                } break;
+                }
+                break;
                 default:
                 {
                     super.onManagerConnected(status);
-                } break;
+                    Log.e(TAG, "OpenCV loaded failed");
+                }
+                break;
             }
         }
     };
@@ -95,7 +99,15 @@ public class BeautyFaceActivity extends AppCompatActivity implements View.OnClic
     }
 
     public void Integral_Image_Demo() {
-        Mat src = Imgcodecs.imread(fileUri.getPath());
+        Mat src;
+        if (fileUri == null) {
+            BitmapDrawable bitmapDrawable = (BitmapDrawable)getResources().getDrawable(R.drawable.lena);
+            Bitmap bitmap = bitmapDrawable.getBitmap();
+            src = new Mat();
+            Utils.bitmapToMat(bitmap, src);
+        } else {
+            src = Imgcodecs.imread(fileUri.getPath());
+        }
         if(src.empty()){
             return;
         }

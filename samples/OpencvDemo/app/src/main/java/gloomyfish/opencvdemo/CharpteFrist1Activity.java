@@ -97,7 +97,7 @@ public class CharpteFrist1Activity extends AppCompatActivity implements View.OnC
     private void convert2Gray() {
         Mat src;
         if (fileUri == null) {
-            BitmapDrawable bitmapDrawable = (BitmapDrawable)getResources().getDrawable(R.drawable.facedetection);
+            BitmapDrawable bitmapDrawable = (BitmapDrawable)getResources().getDrawable(R.drawable.lena);
             Bitmap bitmap = bitmapDrawable.getBitmap();
             src = new Mat();
             Utils.bitmapToMat(bitmap, src);

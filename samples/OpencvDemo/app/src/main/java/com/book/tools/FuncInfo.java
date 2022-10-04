@@ -1,0 +1,120 @@
+package com.book.tools;
+
+/* loaded from: classes2.dex */
+public class FuncInfo {
+
+    /* loaded from: classes2.dex */
+    public class FuncId {
+        public static final int FUNCID_2B = 171;
+        public static final int FUNCID_AnimalInfo = 102;
+        public static final int FUNCID_Arrow = 167;
+        public static final int FUNCID_B = 41;
+        public static final int FUNCID_B_APower = 12;
+        public static final int FUNCID_B_Biopsy = 16;
+        public static final int FUNCID_B_Dynamic = 6;
+        public static final int FUNCID_B_Enhance = 11;
+        public static final int FUNCID_B_Expand = 8;
+        public static final int FUNCID_B_Focus = 5;
+        public static final int FUNCID_B_FrameComp = 14;
+        public static final int FUNCID_B_FrameCorre = 7;
+        public static final int FUNCID_B_Freq = 4;
+        public static final int FUNCID_B_Gain = 3;
+        public static final int FUNCID_B_Gray = 10;
+        public static final int FUNCID_B_LRReverse = 176;
+        public static final int FUNCID_B_PseudoColor = 175;
+        public static final int FUNCID_B_Steer = 13;
+        public static final int FUNCID_B_TGC = 15;
+        public static final int FUNCID_B_Tsi = 9;
+        public static final int FUNCID_B_UDReverse = 177;
+        public static final int FUNCID_BodyMark = 165;
+        public static final int FUNCID_C = 42;
+        public static final int FUNCID_C_Baseline = 178;
+        public static final int FUNCID_C_DISP_LINEANDDOT = 39;
+        public static final int FUNCID_C_FrameCorre = 24;
+        public static final int FUNCID_C_Freq = 23;
+        public static final int FUNCID_C_Gain = 21;
+        public static final int FUNCID_C_PSEUDOCOLOR = 28;
+        public static final int FUNCID_C_Priority = 27;
+        public static final int FUNCID_C_Scale = 22;
+        public static final int FUNCID_C_Steer = 25;
+        public static final int FUNCID_C_WallFilter = 26;
+        public static final int FUNCID_C_reverse = 179;
+        public static final int FUNCID_Cat_use = 98;
+        public static final int FUNCID_ClearAll = 174;
+        public static final int FUNCID_Comment = 152;
+        public static final int FUNCID_Depth = 2;
+        public static final int FUNCID_Dog_use = 97;
+        public static final int FUNCID_ExamFinish = 161;
+        public static final int FUNCID_ExamList = 160;
+        public static final int FUNCID_FREEZE = 1;
+        public static final int FUNCID_FREEZE_FREEZE = 181;
+        public static final int FUNCID_FREEZE_UNFREEZE = 182;
+        public static final int FUNCID_Horse_use = 99;
+        public static final int FUNCID_HospitalSet = 162;
+        public static final int FUNCID_Human_use = 96;
+        public static final int FUNCID_M = 45;
+        public static final int FUNCID_M_ColorMap = 64;
+        public static final int FUNCID_M_Dynamic = 63;
+        public static final int FUNCID_M_Gain = 61;
+        public static final int FUNCID_M_LineCorr = 66;
+        public static final int FUNCID_M_LineNum = 68;
+        public static final int FUNCID_M_PostEffect = 65;
+        public static final int FUNCID_M_Speed = 62;
+        public static final int FUNCID_M_TimeMark = 67;
+        public static final int FUNCID_Meas = 151;
+        public static final int FUNCID_Others_use = 101;
+        public static final int FUNCID_Ox_use = 100;
+        public static final int FUNCID_PD = 169;
+        public static final int FUNCID_POWER = 43;
+        public static final int FUNCID_POWER_Dynamic = 38;
+        public static final int FUNCID_POWER_FrameCorre = 35;
+        public static final int FUNCID_POWER_Freq = 31;
+        public static final int FUNCID_POWER_Gain = 29;
+        public static final int FUNCID_POWER_Priority = 36;
+        public static final int FUNCID_POWER_PseudoColor = 37;
+        public static final int FUNCID_POWER_Scale = 30;
+        public static final int FUNCID_POWER_Speed_Reverse = 33;
+        public static final int FUNCID_POWER_Steer = 32;
+        public static final int FUNCID_POWER_WallFilter = 34;
+        public static final int FUNCID_PW = 44;
+        public static final int FUNCID_PW_ACSPWR = 94;
+        public static final int FUNCID_PW_Angle = 74;
+        public static final int FUNCID_PW_AutoCalc = 82;
+        public static final int FUNCID_PW_AutoCalcParam = 95;
+        public static final int FUNCID_PW_BaseLine = 71;
+        public static final int FUNCID_PW_ColopMap_Switch = 75;
+        public static final int FUNCID_PW_ColorMap = 79;
+        public static final int FUNCID_PW_Dynamic = 81;
+        public static final int FUNCID_PW_Filter = 88;
+        public static final int FUNCID_PW_Freq = 85;
+        public static final int FUNCID_PW_Gain = 87;
+        public static final int FUNCID_PW_GatePos = 90;
+        public static final int FUNCID_PW_GateSize = 89;
+        public static final int FUNCID_PW_LineNum = 91;
+        public static final int FUNCID_PW_PostEffect = 93;
+        public static final int FUNCID_PW_QOPT = 92;
+        public static final int FUNCID_PW_QuickAngle = 73;
+        public static final int FUNCID_PW_Reverse = 78;
+        public static final int FUNCID_PW_Scale = 86;
+        public static final int FUNCID_PW_Speed = 72;
+        public static final int FUNCID_PW_Steer = 84;
+        public static final int FUNCID_PW_TimeMark = 76;
+        public static final int FUNCID_PW_TraceRange = 83;
+        public static final int FUNCID_PW_Volume = 80;
+        public static final int FUNCID_PatientInfo = 159;
+        public static final int FUNCID_Preset = 153;
+        public static final int FUNCID_Print = 168;
+        public static final int FUNCID_Probe = 156;
+        public static final int FUNCID_Review = 163;
+        public static final int FUNCID_SaveCine = 158;
+        public static final int FUNCID_SaveImg = 157;
+        public static final int FUNCID_SaveParams = 173;
+        public static final int FUNCID_TD = 170;
+        public static final int FUNCID_THI = 164;
+        public static final int FUNCID_UPDATE = 172;
+        public static final int FUNCID_Zoom = 166;
+
+        public FuncId() {
+        }
+    }
+}

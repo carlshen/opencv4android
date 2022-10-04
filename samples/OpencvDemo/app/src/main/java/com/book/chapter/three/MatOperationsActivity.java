@@ -114,7 +114,7 @@ public class MatOperationsActivity extends AppCompatActivity implements View.OnC
         // 加载图像
         Mat src;
         if (fileUri == null) {
-            BitmapDrawable bitmapDrawable = (BitmapDrawable)getResources().getDrawable(R.drawable.facedetection);
+            BitmapDrawable bitmapDrawable = (BitmapDrawable)getResources().getDrawable(R.drawable.lena);
             Bitmap bitmap = bitmapDrawable.getBitmap();
             src = new Mat();
             Utils.bitmapToMat(bitmap, src);
@@ -282,7 +282,15 @@ public class MatOperationsActivity extends AppCompatActivity implements View.OnC
      */
     public void adjustBrightAndContrast(int b, float c) {
         // 输入图像src1
-        Mat src = Imgcodecs.imread(fileUri.getPath());
+        Mat src;
+        if (fileUri == null) {
+            BitmapDrawable bitmapDrawable = (BitmapDrawable)getResources().getDrawable(R.drawable.lena);
+            Bitmap bitmap = bitmapDrawable.getBitmap();
+            src = new Mat();
+            Utils.bitmapToMat(bitmap, src);
+        } else {
+            src = Imgcodecs.imread(fileUri.getPath());
+        }
         if(src.empty()){
             return;
         }
@@ -308,7 +316,15 @@ public class MatOperationsActivity extends AppCompatActivity implements View.OnC
 
     public void matArithmeticDemo() {
         // 输入图像src1
-        Mat src = Imgcodecs.imread(fileUri.getPath());
+        Mat src;
+        if (fileUri == null) {
+            BitmapDrawable bitmapDrawable = (BitmapDrawable)getResources().getDrawable(R.drawable.lena);
+            Bitmap bitmap = bitmapDrawable.getBitmap();
+            src = new Mat();
+            Utils.bitmapToMat(bitmap, src);
+        } else {
+            src = Imgcodecs.imread(fileUri.getPath());
+        }
         if(src.empty()){
             return;
         }
@@ -331,7 +347,15 @@ public class MatOperationsActivity extends AppCompatActivity implements View.OnC
     }
 
     public void channelsAndPixels() {
-        Mat src = Imgcodecs.imread(fileUri.getPath());
+        Mat src;
+        if (fileUri == null) {
+            BitmapDrawable bitmapDrawable = (BitmapDrawable)getResources().getDrawable(R.drawable.lena);
+            Bitmap bitmap = bitmapDrawable.getBitmap();
+            src = new Mat();
+            Utils.bitmapToMat(bitmap, src);
+        } else {
+            src = Imgcodecs.imread(fileUri.getPath());
+        }
         if(src.empty()){
             return;
         }

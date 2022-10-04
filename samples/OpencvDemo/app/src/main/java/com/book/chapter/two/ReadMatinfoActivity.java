@@ -124,7 +124,7 @@ public class ReadMatinfoActivity extends AppCompatActivity implements View.OnCli
     private void mat2BitmapDemo(int index) {
         Mat src;
         if (fileUri == null) {
-            BitmapDrawable bitmapDrawable = (BitmapDrawable)getResources().getDrawable(R.drawable.facedetection);
+            BitmapDrawable bitmapDrawable = (BitmapDrawable)getResources().getDrawable(R.drawable.lena);
             Bitmap bitmap = bitmapDrawable.getBitmap();
             src = new Mat();
             Utils.bitmapToMat(bitmap, src);
@@ -174,7 +174,7 @@ public class ReadMatinfoActivity extends AppCompatActivity implements View.OnCli
         // 显示结果
         ImageView iv = (ImageView)this.findViewById(R.id.matInfo_imageView);
         iv.setImageBitmap(bm);
-//        bm.recycle();
+        bm.recycle();
     }
 
     private void basicDrawOnMat() {

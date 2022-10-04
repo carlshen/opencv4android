@@ -4,7 +4,13 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/OpencvDemo.iml" filepath="$PROJECT_DIR$/.idea/modules/OpencvDemo.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/OpencvDemo.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/OpencvDemo.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/OpencvDemo.app.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/OpencvDemo.app.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/OpencvDemo.app.main.iml" filepath="$PROJECT_DIR$/.idea/modules/app/OpencvDemo.app.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/OpencvDemo.app.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/OpencvDemo.app.unitTest.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/opencv340/OpencvDemo.opencv340.iml" filepath="$PROJECT_DIR$/.idea/modules/opencv340/OpencvDemo.opencv340.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/opencv340/OpencvDemo.opencv340.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/opencv340/OpencvDemo.opencv340.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/opencv340/OpencvDemo.opencv340.main.iml" filepath="$PROJECT_DIR$/.idea/modules/opencv340/OpencvDemo.opencv340.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/opencv340/OpencvDemo.opencv340.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/opencv340/OpencvDemo.opencv340.unitTest.iml" />
     </modules>
   </component>
 </project>

@@ -11,4 +11,22 @@
     <string name="eye_found">眼睛检测</string>
     <string name="render_ball">眼睛渲染</string>
     <string name="eye_ball">黑眼球</string>
+
+    <string name="wifi_connect_auto">off</string>
+    <string name="wifi_info_preferences">wifiInfo</string>
+    <string name="wifi_login_show">on</string>
+    <string name="wifi_name_preferences">wifiName</string>
+    <string name="wifi_pwd_preferences">wifiPwd</string>
+
+    <string name="def_vet">off</string>
+    <string name="patient_database">/SonoiQ/database</string>
+    <string name="patient_info">on</string>
+    <string name="pi_name">PI</string>
+    <string name="pic_save_path">/SonoiQ/Picture/</string>
+    <string name="pid_global_version">global_version</string>
+    <string name="pid_version_name">global version</string>
+    <string name="ppg_name">PPG</string>
+    <string name="ppg_unit">mmHg</string>
+    <string name="language" />
+
 </resources>

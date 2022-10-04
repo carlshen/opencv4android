@@ -53,13 +53,16 @@ public class DisplayModeActivity extends AppCompatActivity implements CameraBrid
             switch (status) {
                 case LoaderCallbackInterface.SUCCESS:
                 {
-                    Log.i(TAG, "OpenCV loaded successfully");
+                    Log.d(TAG, "OpenCV loaded successfully");
 //                    mOpenCvCameraView.enableView();
-                } break;
+                }
+                break;
                 default:
                 {
                     super.onManagerConnected(status);
-                } break;
+                    Log.e(TAG, "OpenCV loaded failed");
+                }
+                break;
             }
         }
     };

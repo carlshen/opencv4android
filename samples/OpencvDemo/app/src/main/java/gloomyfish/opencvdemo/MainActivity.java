@@ -1,8 +1,15 @@
 package gloomyfish.opencvdemo;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -18,6 +25,7 @@ import org.opencv.android.OpenCVLoader;
 
 public class MainActivity extends AppCompatActivity {
     private String CV_TAG = "OpenCV";
+    private static final int CODE_REQ_PERMISSIONS = 665;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +33,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         iniLoadOpenCV();
         initListView();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            checkPermission();
+        }
     }
 
     private void iniLoadOpenCV() {
@@ -55,5 +66,25 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this.getApplicationContext(), SectionsActivity.class);
         intent.putExtra(AppConstants.ITEM_KEY, dto);
         startActivity(intent);
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == CODE_REQ_PERMISSIONS) {
+            for (int grantResult : grantResults) {
+                if (grantResult != PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(this, "缺少权限，请先授予权限", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+            }
+//            showToast("已获得权限");
+        }
+    }
+
+    public void checkPermission() {
+        ActivityCompat.requestPermissions(MainActivity.this,
+                new String[]{Manifest.permission.CAMERA,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        Manifest.permission.READ_EXTERNAL_STORAGE}, CODE_REQ_PERMISSIONS);
     }
 }
