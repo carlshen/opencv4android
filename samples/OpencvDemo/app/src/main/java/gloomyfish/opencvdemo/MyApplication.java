@@ -8,6 +8,8 @@ import android.os.Environment;
 import android.os.SystemClock;
 import android.util.Log;
 
+import androidx.multidex.MultiDexApplication;
+
 import org.xutils.DbManager;
 import org.xutils.common.util.LogUtil;
 import org.xutils.ex.DbException;
@@ -15,7 +17,7 @@ import org.xutils.x;
 
 import java.io.File;
 
-public class MyApplication  extends Application {
+public class MyApplication  extends MultiDexApplication {
 //    public static User Current_User;
     private static Context mContext;
     private DbManager.DaoConfig daoConfig;
@@ -52,25 +54,25 @@ public class MyApplication  extends Application {
         super.onCreate();
         mContext = getApplicationContext();
         x.Ext.init(this);
-        x.Ext.setDebug(false);
-        this.userdaoConfig = new DbManager.DaoConfig().setDbDir(new File(getExternalFilesDir(null), "UserInfo/database")).setDbName("sonoiq.db").setDbVersion(1).setDbOpenListener(new DbManager.DbOpenListener() { // from class: com.Com.application.MyApplication.2
-            @Override // org.xutils.DbManager.DbOpenListener
-            public void onDbOpened(DbManager dbManager) {
-                dbManager.getDatabase().enableWriteAheadLogging();
-            }
-        }).setDbUpgradeListener(new DbManager.DbUpgradeListener() { // from class: com.Com.application.MyApplication.1
-            @Override // org.xutils.DbManager.DbUpgradeListener
-            public void onUpgrade(DbManager dbManager, int i, int i2) {
-                while (true) {
-                    i++;
-                    if (i <= i2) {
-                        MyApplication.this.upgradeAnimalDbTo(dbManager, i);
-                    } else {
-                        return;
-                    }
-                }
-            }
-        });
+        x.Ext.setDebug(BuildConfig.DEBUG);
+//        this.userdaoConfig = new DbManager.DaoConfig().setDbDir(new File(getExternalFilesDir(null), "UserInfo/database")).setDbName("sonoiq.db").setDbVersion(1).setDbOpenListener(new DbManager.DbOpenListener() { // from class: com.Com.application.MyApplication.2
+//            @Override // org.xutils.DbManager.DbOpenListener
+//            public void onDbOpened(DbManager dbManager) {
+//                dbManager.getDatabase().enableWriteAheadLogging();
+//            }
+//        }).setDbUpgradeListener(new DbManager.DbUpgradeListener() { // from class: com.Com.application.MyApplication.1
+//            @Override // org.xutils.DbManager.DbUpgradeListener
+//            public void onUpgrade(DbManager dbManager, int i, int i2) {
+//                while (true) {
+//                    i++;
+//                    if (i <= i2) {
+//                        MyApplication.this.upgradeAnimalDbTo(dbManager, i);
+//                    } else {
+//                        return;
+//                    }
+//                }
+//            }
+//        });
         this.defaultUncaughtExceptionHandler = Thread.getDefaultUncaughtExceptionHandler();
         Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() { // from class: com.Com.application.MyApplication.3
             @Override // java.lang.Thread.UncaughtExceptionHandler

@@ -18,6 +18,9 @@
     <string name="wifi_name_preferences">wifiName</string>
     <string name="wifi_pwd_preferences">wifiPwd</string>
 
+    <string name="save_as_dicom">off</string>
+    <string name="save_dialog">on</string>
+
     <string name="def_vet">off</string>
     <string name="patient_database">/SonoiQ/database</string>
     <string name="patient_info">on</string>

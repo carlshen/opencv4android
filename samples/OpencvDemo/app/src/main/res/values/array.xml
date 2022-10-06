@@ -4216,16 +4216,16 @@
 <!--        <item>Размер</item>-->
 <!--        <item>حجم</item>-->
 <!--    </array>-->
-<!--    <array name="img_saving">-->
-<!--        <item>Image saving…</item>-->
-<!--        <item>图片保存中…</item>-->
-<!--        <item>Bildspeicherung…</item>-->
-<!--        <item>Guardando la imagen…</item>-->
-<!--        <item>Sauvegarde d&apos;image en cours…</item>-->
-<!--        <item>Salvataggio delle immagini...</item>-->
-<!--        <item>Сохранение изображения…</item>-->
-<!--        <item>حفظ الصورة…</item>-->
-<!--    </array>-->
+    <array name="img_saving">
+        <item>Image saving…</item>
+        <item>图片保存中…</item>
+        <item>Bildspeicherung…</item>
+        <item>Guardando la imagen…</item>
+        <item>Sauvegarde d image en cours…</item>
+        <item>Salvataggio delle immagini...</item>
+        <item>Сохранение изображения…</item>
+        <item>حفظ الصورة…</item>
+    </array>
 <!--    <array name="import_fail">-->
 <!--        <item>Import failed!</item>-->
 <!--        <item>导入失败！</item>-->
@@ -7453,16 +7453,16 @@
 <!--        <item>Сохранить фильм</item>-->
 <!--        <item>حفظ الفيلم</item>-->
 <!--    </array>-->
-<!--    <array name="save_data_finished">-->
-<!--        <item>Save Local Data Finished!</item>-->
-<!--        <item>保存本地数据完毕!</item>-->
-<!--        <item>Lokale Daten speichern Fertig!</item>-->
-<!--        <item>¡Guardar los Datos Locales ha Terminado!</item>-->
-<!--        <item>Enregistrer les données locales terminées !</item>-->
-<!--        <item>Salva i dati locali con successo!</item>-->
-<!--        <item>Сохранение локальных данных завершено!</item>-->
-<!--        <item>تم حفظ البيانات المحلية بنجاح.</item>-->
-<!--    </array>-->
+    <array name="save_data_finished">
+        <item>Save Local Data Finished!</item>
+        <item>保存本地数据完毕!</item>
+        <item>Lokale Daten speichern Fertig!</item>
+        <item>¡Guardar los Datos Locales ha Terminado!</item>
+        <item>Enregistrer les données locales terminées !</item>
+        <item>Salva i dati locali con successo!</item>
+        <item>Сохранение локальных данных завершено!</item>
+        <item>تم حفظ البيانات المحلية بنجاح.</item>
+    </array>
 <!--    <array name="save_img">-->
 <!--        <item>Save Img</item>-->
 <!--        <item>保存图像</item>-->

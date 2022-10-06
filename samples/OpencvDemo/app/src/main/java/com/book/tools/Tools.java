@@ -7,6 +7,8 @@ import android.widget.Toast;
 //import com.anggrayudi.hiddenapi.r.Rc;
 import androidx.core.view.ViewCompat;
 
+import com.book.handprobe.LanguageUtil;
+
 import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
@@ -280,7 +282,7 @@ public class Tools {
         ((MyApplication) x.app()).GetActivity().runOnUiThread(new Runnable() { // from class: handprobe.application.wlan.protocol.Tools.1
             @Override // java.lang.Runnable
             public void run() {
-//                Toast.makeText(MyApplication.GetAppContext(), LanguageUtil._NLS(i), 0).show();
+                Toast.makeText(MyApplication.GetAppContext(), LanguageUtil._NLS(i), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -289,7 +291,7 @@ public class Tools {
         ((MyApplication) x.app()).GetActivity().runOnUiThread(new Runnable() { // from class: handprobe.application.wlan.protocol.Tools.2
             @Override // java.lang.Runnable
             public void run() {
-//                Toast.makeText(MyApplication.GetAppContext(), LanguageUtil._NLS(i), i2).show();
+                Toast.makeText(MyApplication.GetAppContext(), LanguageUtil._NLS(i), i2).show();
             }
         });
     }
@@ -298,7 +300,7 @@ public class Tools {
         ((MyApplication) x.app()).GetActivity().runOnUiThread(new Runnable() { // from class: handprobe.application.wlan.protocol.Tools.3
             @Override // java.lang.Runnable
             public void run() {
-//                Toast.makeText(MyApplication.GetAppContext(), str, 0).show();
+                Toast.makeText(MyApplication.GetAppContext(), str, Toast.LENGTH_SHORT).show();
             }
         });
     }

@@ -7,9 +7,11 @@ import android.content.DialogInterface;
 import android.net.wifi.WifiManager;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 
 import androidx.core.view.ViewCompat;
 
+import com.book.handprobe.AppProc;
 import com.book.handprobe.Ultrasys;
 
 import java.io.FileOutputStream;
@@ -333,14 +335,582 @@ public class WlanProbe {
             @Override // android.os.Handler
             /*
                 Code decompiled incorrectly, please refer to instructions dump.
-                To view partially-correct code enable 'Show inconsistent code' option in preferences
             */
-            public void handleMessage(android.os.Message r11) {
-                /*
-                    Method dump skipped, instructions count: 2760
-                    To view this dump change 'Code comments level' option to 'DEBUG'
-                */
-                throw new UnsupportedOperationException("Method not decompiled: handprobe.application.wlan.wlanprobe.WlanProbe.AnonymousClass1.handleMessage(android.os.Message):void");
+            public void handleMessage(Message message) {
+                int i;
+                if (message.what != 1) {
+                    return;
+                }
+                synchronized (CmdHandler.mNetDataQueue) {
+                    while (true) {
+                        CmdInfo.CmdElem poll = CmdHandler.mNetDataQueue.poll();
+                        if (poll == null) {
+                            return;
+                        }
+                        byte b = poll.cmdid;
+                        switch (b) {
+                            case -115:
+                                String str = new String(poll.Data);
+                                WlanProbe.this.mProbeFwVerObservable.setChanged();
+                                WlanProbe.this.mProbeFwVerObservable.notifyObservers(str);
+                                break;
+                            case -114:
+                                String byteToStr = null;
+                                try {
+                                    byteToStr = Tools.byteToStr(poll.Data);
+                                } catch (UnsupportedEncodingException e) {
+                                    e.printStackTrace();
+                                }
+                                WlanProbe.this.mWifiFwVerObservable.setChanged();
+                                WlanProbe.this.mWifiFwVerObservable.notifyObservers(byteToStr);
+                                break;
+                            default:
+                                int i2 = 0;
+                                boolean z = false;
+                                int i3 = 0;
+                                boolean z2 = false;
+                                switch (b) {
+                                    case -112:
+                                        byte b2 = poll.Data[0];
+                                        Ultrasys.Instance().mCurChannel = b2;
+//                                        AppProc.Instance().mWifiProbeSelect.setCurSelectChannel(b2);
+                                        Log.i("D_WIFI_CHANNEL", "channel = " + ((int) b2));
+                                        break;
+                                    case -111:
+                                        String str2 = new String(poll.Data);
+                                        WlanProbe.this.mProbePidVerObservable.setChanged();
+                                        WlanProbe.this.mProbePidVerObservable.notifyObservers(str2);
+                                        break;
+                                    case -110:
+                                        String byteToStr2 = null;
+                                        try {
+                                            byteToStr2 = Tools.byteToStr(poll.Data);
+                                        } catch (UnsupportedEncodingException e) {
+                                            e.printStackTrace();
+                                        }
+                                        WlanProbe.this.mProbeFpgaVerObservable.setChanged();
+                                        WlanProbe.this.mProbeFpgaVerObservable.notifyObservers(byteToStr2);
+                                        break;
+                                    default:
+                                        switch (b) {
+                                            case -107:
+                                                String str3 = new String(poll.Data);
+                                                WlanProbe.this.mProbeSnObservable.setChanged();
+                                                WlanProbe.this.mProbeSnObservable.notifyObservers(str3);
+                                                break;
+                                            case -106:
+                                                try {
+                                                    WlanProbe.this.m_ProductIdStr = Tools.byteToStr(poll.Data);
+                                                } catch (UnsupportedEncodingException e) {
+                                                    e.printStackTrace();
+                                                }
+                                                WlanProbe.this.mProductIdObservable.setChanged();
+                                                WlanProbe.this.mProductIdObservable.notifyObservers(WlanProbe.this.m_ProductIdStr);
+                                                break;
+                                            default:
+                                                switch (b) {
+                                                    case -101:
+                                                        String byteToStr3 = null;
+                                                        try {
+                                                            byteToStr3 = Tools.byteToStr(poll.Data);
+                                                        } catch (UnsupportedEncodingException e) {
+                                                            e.printStackTrace();
+                                                        }
+                                                        WlanProbe.this.mProbeBoardVerObservable.setChanged();
+                                                        WlanProbe.this.mProbeBoardVerObservable.notifyObservers(byteToStr3);
+                                                        break;
+                                                    case -100:
+                                                        String byteToStr4 = null;
+                                                        try {
+                                                            byteToStr4 = Tools.byteToStr(poll.Data);
+                                                        } catch (UnsupportedEncodingException e) {
+                                                            e.printStackTrace();
+                                                        }
+                                                        WlanProbe.this.mBoardSnObservable.setChanged();
+                                                        WlanProbe.this.mBoardSnObservable.notifyObservers(byteToStr4);
+                                                        break;
+                                                    default:
+                                                        switch (b) {
+                                                            case -95:
+                                                                if (((byte) (poll.Data[0] & 1)) > 0) {
+                                                                    Ultrasys.Instance().SetNoExpand(true);
+                                                                    break;
+                                                                } else if (((byte) (poll.Data[0] & 1)) == 0) {
+                                                                    Ultrasys.Instance().SetNoExpand(false);
+                                                                    break;
+                                                                }
+                                                                break;
+                                                            case -94:
+                                                                AppProc.Instance().LianmedSendPacket(poll.Data);
+                                                                break;
+                                                            default:
+                                                                switch (b) {
+                                                                    case -64:
+                                                                        if (poll.Data.length >= 2) {
+                                                                            WlanProbe.this.mTemperature = Float.valueOf(WlanProbe.this.GetTemperature((poll.Data[0] & 255) | ((poll.Data[1] & 255) << 8)));
+                                                                            WlanProbe.this.mTempObservable.setChanged();
+                                                                            WlanProbe.this.mTempObservable.notifyObservers(WlanProbe.this.mTemperature);
+                                                                            Log.i("Wlanprobe", "温度: " + WlanProbe.this.mTemperature);
+                                                                            break;
+                                                                        }
+                                                                        break;
+                                                                    case -63:
+                                                                        if (poll.Data.length >= 2) {
+                                                                            WlanProbe.this.mBattLevel = Integer.valueOf(WlanProbe.this.GetBatLevel1((poll.Data[0] & 255) | ((poll.Data[1] & 255) << 8)));
+                                                                            WlanProbe.this.mBattLevelObservable.setChanged();
+                                                                            WlanProbe.this.mBattLevelObservable.notifyObservers(WlanProbe.this.mBattLevel);
+                                                                            break;
+                                                                        }
+                                                                        break;
+                                                                    case -62:
+                                                                        WlanProbe.this.SetProbeStyle(0);
+                                                                        if (Ultrasys.Instance().GetProbeConType() != 0 && poll.Data.length >= 2) {
+                                                                            WlanProbe.this.mProbeId = Integer.valueOf(WlanProbe.CalProbeId((poll.Data[0] & 255) | ((poll.Data[1] & 255) << 8)));
+//                                                                            if (!AppProc.Instance().mWifiProbeSelect.isAdded() && !AppProc.Instance().mUsbProbeConnectDlgFrag.isAdded()) {
+//                                                                                if (WlanProbe.this.m_AutoRun) {
+//                                                                                    WlanProbe.this.m_AutoRun = false;
+//                                                                                    Ultrasys.Instance().UnFreeze(true);
+//                                                                                }
+//                                                                                if ((Ultrasys.Instance().GetProbeConType() != 5 || Ultrasys.Instance().GetProbeConType() == 4) && Ultrasys.Instance().mIsUnFreeState && WlanProbe.this.mProbeId.intValue() == 0) {
+//                                                                                    AppProc.Instance().FuncIdProc(181);
+//                                                                                }
+//                                                                                WlanProbe.this.mProbeIdObservable.setChanged();
+//                                                                                WlanProbe.this.mProbeIdObservable.notifyObservers(WlanProbe.this.mProbeId);
+//                                                                                Ultrasys.Instance().UpdateBFramerate();
+//                                                                                break;
+//                                                                            }
+                                                                            Ultrasys.Instance().CheckProbeChange(WlanProbe.this.mProbeId.intValue(), false);
+                                                                            if (Ultrasys.Instance().GetProbeConType() != 5) {
+                                                                            }
+                                                                            AppProc.Instance().FuncIdProc(181);
+                                                                            WlanProbe.this.mProbeIdObservable.setChanged();
+                                                                            WlanProbe.this.mProbeIdObservable.notifyObservers(WlanProbe.this.mProbeId);
+                                                                            Ultrasys.Instance().UpdateBFramerate();
+                                                                        }
+                                                                        break;
+                                                                    default:
+                                                                        switch (b) {
+                                                                            case -60:
+                                                                                break;
+                                                                            case -59:
+                                                                                if (poll.Data.length >= 2) {
+                                                                                    int i4 = ((poll.Data[0] & 255) | ((poll.Data[1] & 255) << 8)) - 48;
+                                                                                    if (WlanProbe.this.mProbeId.intValue() != i4) {
+                                                                                        WlanProbe.this.mProbeId = Integer.valueOf(i4);
+                                                                                        Ultrasys.Instance().SelectProber(WlanProbe.this.mProbeId.intValue(), 0);
+                                                                                    }
+                                                                                    WlanProbe.this.mProbeIdObservable.setChanged();
+                                                                                    WlanProbe.this.mProbeIdObservable.notifyObservers(WlanProbe.this.mProbeId);
+                                                                                }
+                                                                                i = poll.Data[0] & 255;
+                                                                                if (WlanProbe.this.mProbeId.intValue() != i) {
+                                                                                    WlanProbe.this.mProbeId = Integer.valueOf(i);
+                                                                                    WlanProbe.this.mProbeIdObservable.setChanged();
+                                                                                    WlanProbe.this.mProbeIdObservable.notifyObservers(WlanProbe.this.mProbeId);
+                                                                                    break;
+                                                                                }
+                                                                                break;
+                                                                            default:
+                                                                                switch (b) {
+                                                                                    case 6:
+                                                                                        Ultrasys.Instance().SetBGain(poll.Data[0] & 255);
+                                                                                        break;
+                                                                                    case 7:
+                                                                                        Ultrasys.Instance().SetBFreq(poll.Data[0] & 255);
+                                                                                        break;
+                                                                                    case 8:
+                                                                                        Ultrasys.Instance().SetTsi(poll.Data[0] & 255);
+                                                                                        break;
+                                                                                    case 9:
+                                                                                        Ultrasys.Instance().SetAPower(poll.Data[0] & 255);
+                                                                                        break;
+                                                                                    case 10:
+                                                                                        Ultrasys.Instance().SetBDynamic(poll.Data[0] & 255);
+                                                                                        break;
+                                                                                    case 11:
+                                                                                        Ultrasys.Instance().SetBExpand(poll.Data[0] & 255);
+                                                                                        break;
+                                                                                    case 12:
+                                                                                        Ultrasys.Instance().SetBFocus(poll.Data[0] & 255);
+                                                                                        break;
+                                                                                    case 13:
+                                                                                        Ultrasys.Instance().SetBEnhance(poll.Data[0] & 255);
+                                                                                        break;
+                                                                                    case 14:
+                                                                                        Ultrasys.Instance().SetBFrameComp(poll.Data[0] & 255);
+                                                                                        break;
+                                                                                    case 15:
+                                                                                        Ultrasys.Instance().SetBSteer(poll.Data[0] & 255);
+                                                                                        break;
+                                                                                    case 16:
+                                                                                        Ultrasys.Instance().SetBFrameCorre(poll.Data[0] & 255);
+                                                                                        break;
+                                                                                    case 17:
+                                                                                        Ultrasys.Instance().SetBGrayMap(poll.Data[0] & 255);
+                                                                                        break;
+                                                                                    case 18:
+                                                                                        Ultrasys.Instance().setBLR(poll.Data[0] & 255);
+                                                                                        break;
+                                                                                    case 19:
+                                                                                        Ultrasys.Instance().setBUD(poll.Data[0] & 255);
+                                                                                        break;
+                                                                                    default:
+                                                                                        switch (b) {
+                                                                                            case 25:
+                                                                                                Ultrasys.Instance().SetCGain(poll.Data[0] & 255);
+                                                                                                break;
+                                                                                            case 26:
+                                                                                                Ultrasys.Instance().SetCScale(poll.Data[0] & 255);
+                                                                                                break;
+                                                                                            case 27:
+                                                                                                byte b3 = poll.Data[0];
+                                                                                                break;
+                                                                                            case 28:
+                                                                                                Ultrasys.Instance().SetCFreq(poll.Data[0] & 255);
+                                                                                                break;
+                                                                                            case 29:
+                                                                                                Ultrasys.Instance().SetCWallFilter(poll.Data[0] & 255);
+                                                                                                break;
+                                                                                            case 30:
+                                                                                                byte b4 = poll.Data[0];
+                                                                                                break;
+                                                                                            case 31:
+                                                                                                Ultrasys.Instance().SetCFrameCorre(poll.Data[0] & 255);
+                                                                                                break;
+                                                                                            case 32:
+                                                                                                Ultrasys.Instance().SetCPriority(poll.Data[0] & 255);
+                                                                                                break;
+                                                                                            case 33:
+                                                                                                Ultrasys.Instance().SetVelColorMap(poll.Data[0] & 255);
+                                                                                                break;
+                                                                                            case 34:
+                                                                                                Ultrasys.Instance().SetCSteer((byte) (poll.Data[0] & 255));
+                                                                                                break;
+                                                                                            case 35:
+                                                                                                if (poll.Data.length >= 4) {
+                                                                                                    Ultrasys.Instance().SetCLineRange(((poll.Data[0] & 255) | ((poll.Data[1] & 255) << 8)) / 16, ((poll.Data[2] & 255) | ((poll.Data[3] & 255) << 8)) / 16);
+                                                                                                    break;
+                                                                                                }
+                                                                                                break;
+                                                                                            case 36:
+                                                                                                if (poll.Data.length >= 4) {
+                                                                                                    Ultrasys.Instance().SetCDotRange((poll.Data[0] & 255) | ((poll.Data[1] & 255) << 8), (poll.Data[2] & 255) | ((poll.Data[3] & 255) << 8));
+                                                                                                    break;
+                                                                                                }
+                                                                                                break;
+                                                                                            default:
+                                                                                                switch (b) {
+                                                                                                    case 45:
+                                                                                                        Ultrasys.Instance().SetMGain(poll.Data[0] & 255);
+                                                                                                        break;
+                                                                                                    case 46:
+                                                                                                        Ultrasys.Instance().SetMSpeed(poll.Data[0] & 255);
+                                                                                                        break;
+                                                                                                    case 47:
+                                                                                                        Ultrasys.Instance().SetMDynamic(poll.Data[0] & 255);
+                                                                                                        break;
+                                                                                                    case 48:
+                                                                                                    case 50:
+                                                                                                    case 51:
+                                                                                                    case 55:
+                                                                                                    case 57:
+                                                                                                    case 58:
+                                                                                                    case 60:
+                                                                                                    case 64:
+                                                                                                    case 74:
+                                                                                                    case 81:
+                                                                                                        break;
+                                                                                                    case 49:
+                                                                                                        Ultrasys.Instance().SetMGrayMap(poll.Data[0] & 255);
+                                                                                                        break;
+                                                                                                    case 52:
+                                                                                                        Ultrasys.Instance().SetMDispLine(poll.Data[0] & 255);
+                                                                                                        break;
+                                                                                                    case 53:
+                                                                                                        Ultrasys.Instance().SetPwBaseLine(poll.Data[0] & 255);
+                                                                                                        break;
+                                                                                                    case 54:
+                                                                                                        Ultrasys.Instance().SetPwSpeed(poll.Data[0] & 255);
+                                                                                                        break;
+                                                                                                    case 56:
+                                                                                                        if (poll.Data.length >= 4) {
+//                                                                                                            Ultrasys.Instance().SetPwAngle((poll.Data[0] & 255) | (poll.Data[1] << 8) | (poll.Data[2] << 16) | (poll.Data[3] << HSUsbProbe.VR_USB_SET_AUTH));
+                                                                                                            break;
+                                                                                                        }
+                                                                                                        break;
+                                                                                                    case 59:
+                                                                                                        Ultrasys.Instance().SetPwReserse(poll.Data[0] & 255);
+                                                                                                        break;
+                                                                                                    case 61:
+                                                                                                        Ultrasys.Instance().SetPwVolume(poll.Data[0] & 255);
+                                                                                                        break;
+                                                                                                    case 62:
+                                                                                                        Ultrasys.Instance().SetPwDynamic(poll.Data[0] & 255);
+                                                                                                        break;
+                                                                                                    case 63:
+                                                                                                        byte b5 = poll.Data[0];
+                                                                                                        break;
+                                                                                                    case 65:
+                                                                                                        Ultrasys.Instance().SetPWSteer((byte) (poll.Data[0] & 255));
+                                                                                                        break;
+                                                                                                    case 66:
+                                                                                                        Ultrasys.Instance().SetPwFreq(poll.Data[0] & 255);
+                                                                                                        break;
+                                                                                                    case 67:
+                                                                                                        Ultrasys.Instance().SetPwScale(poll.Data[0] & 255);
+                                                                                                        break;
+                                                                                                    case 68:
+                                                                                                        Ultrasys.Instance().SetPwGain(poll.Data[0] & 255);
+                                                                                                        break;
+                                                                                                    case 69:
+                                                                                                        Ultrasys.Instance().SetPwWallFilter(poll.Data[0] & 255);
+                                                                                                        break;
+                                                                                                    case 70:
+                                                                                                        if (poll.Data.length >= 4) {
+                                                                                                            Ultrasys.Instance().SetPwGateSize(Tools.B2F(poll.Data));
+                                                                                                            break;
+                                                                                                        }
+                                                                                                        break;
+                                                                                                    case 71:
+                                                                                                        if (poll.Data.length >= 4) {
+                                                                                                            Ultrasys.Instance().SetPwGatePos(Tools.B2F(poll.Data));
+                                                                                                            break;
+                                                                                                        }
+                                                                                                        break;
+                                                                                                    case 72:
+                                                                                                        Ultrasys.Instance().SetPwDispLine(poll.Data[0] & 255);
+                                                                                                        break;
+                                                                                                    case 73:
+                                                                                                        "12345678".toCharArray();
+                                                                                                        break;
+                                                                                                    case 75:
+                                                                                                        Ultrasys.Instance().SetAPower(poll.Data[0] & 255);
+                                                                                                        break;
+                                                                                                    case 76:
+                                                                                                        int i5 = poll.Data[0] & 255;
+                                                                                                        if (poll.len == 2) {
+                                                                                                            i2 = poll.Data[1] & 255;
+                                                                                                        }
+                                                                                                        Ultrasys.Instance().SetExamType(i5, i2);
+                                                                                                        break;
+                                                                                                    case 77:
+                                                                                                        Ultrasys.Instance().SetDispMode(0);
+                                                                                                        break;
+                                                                                                    case 78:
+                                                                                                        Ultrasys.Instance().SetDispMode(8);
+                                                                                                        break;
+                                                                                                    case 79:
+                                                                                                        Ultrasys.Instance().SetDispMode(9);
+                                                                                                        break;
+                                                                                                    case 80:
+                                                                                                        Ultrasys.Instance().SetDispMode(55);
+                                                                                                        break;
+                                                                                                    case 82:
+                                                                                                        if (Ultrasys.Instance().GetDispMode() == 5) {
+                                                                                                            Ultrasys.Instance().SetDispMode(WlanProbe.lastMode);
+                                                                                                            break;
+                                                                                                        } else {
+                                                                                                            WlanProbe.lastMode = Ultrasys.Instance().GetDispMode();
+                                                                                                            Ultrasys.Instance().SetDispMode(5);
+                                                                                                            break;
+                                                                                                        }
+                                                                                                    default:
+                                                                                                        switch (b) {
+                                                                                                            case 89:
+                                                                                                                Ultrasys.Instance().SetDispMode(57);
+                                                                                                                break;
+                                                                                                            case 90:
+                                                                                                                Ultrasys.Instance().SetDispMode(58);
+                                                                                                                break;
+                                                                                                            case 91:
+                                                                                                                Ultrasys.Instance().SetDispMode(59);
+                                                                                                                break;
+                                                                                                            case 92:
+                                                                                                                Ultrasys.Instance().SetDispMode(5);
+                                                                                                                break;
+                                                                                                            default:
+                                                                                                                switch (b) {
+                                                                                                                    case 100:
+                                                                                                                        byte[] bArr = poll.Data;
+                                                                                                                        int i6 = bArr[0] & 255;
+                                                                                                                        WlanProbe.this.mVet = i6;
+                                                                                                                        Ultrasys.Instance().mProbeDisabled = false;
+                                                                                                                        if (MyApplication.App().mMainActivity.getResources().getString(R.string.def_vet).equals("off")) {
+                                                                                                                            if (poll.Data.length > 1) {
+                                                                                                                                if ((bArr[1] & 255) > 0 && i6 > 0) {
+                                                                                                                                    byte[] bArr2 = new byte[32];
+                                                                                                                                    bArr2[0] = (byte) 0;
+                                                                                                                                    Ultrasys.Instance().SendCmdToProbe(100, 1, bArr2, 0);
+                                                                                                                                    i6 = 0;
+                                                                                                                                }
+                                                                                                                                Ultrasys Instance = Ultrasys.Instance();
+                                                                                                                                if ((bArr[1] & 255) > 0) {
+                                                                                                                                    z2 = true;
+                                                                                                                                }
+                                                                                                                                Instance.SetHumanVetAuth(z2);
+                                                                                                                            } else {
+                                                                                                                                Ultrasys.Instance().SetHumanVetAuth(false);
+                                                                                                                            }
+                                                                                                                            Ultrasys.Instance().SetVet(i6);
+                                                                                                                            if (Ultrasys.Instance().mProbeDisabled) {
+                                                                                                                                WlanProbe.this.confirmProbeError();
+                                                                                                                                return;
+                                                                                                                            }
+                                                                                                                            WlanProbe.this.mVetObservable.setChanged();
+                                                                                                                            WlanProbe.this.mVetObservable.notifyObservers(Integer.valueOf(i6));
+                                                                                                                        } else {
+                                                                                                                            if (i6 == 0) {
+                                                                                                                                if (poll.Data.length > 1 && (bArr[1] & 255) > 0) {
+                                                                                                                                    WlanProbe.this.mVet = 1;
+                                                                                                                                }
+                                                                                                                                i6 = 1;
+                                                                                                                            }
+//                                                                                                                            Ultrasys.Instance().mPresetServer.initFromFile(false);
+//                                                                                                                            if (i6 != Ultrasys.Instance().GetVet()) {
+//                                                                                                                                int GetProbeDefaultExamMode = Ultrasys.Instance().mPresetServer.mExamModePresetServer.GetProbeDefaultExamMode(WlanProbe.this.mProbeId.intValue());
+//                                                                                                                                Ultrasys.Instance().SetExamType(GetProbeDefaultExamMode, Ultrasys.Instance().GetPattern(WlanProbe.this.mProbeId.intValue(), GetProbeDefaultExamMode));
+//                                                                                                                            }
+                                                                                                                            Ultrasys.Instance().SetVet(i6);
+                                                                                                                            WlanProbe.this.mVetObservable.setChanged();
+                                                                                                                            WlanProbe.this.mVetObservable.notifyObservers(Integer.valueOf(i6));
+                                                                                                                        }
+                                                                                                                        break;
+                                                                                                                    case 101:
+                                                                                                                        int i7 = poll.Data[0] & 255;
+                                                                                                                        if (poll.len == 2) {
+                                                                                                                            i3 = poll.Data[1] & 255;
+                                                                                                                        }
+                                                                                                                        Ultrasys.Instance().SetExamType(i7, i3);
+                                                                                                                        break;
+                                                                                                                    default:
+                                                                                                                        switch (b) {
+                                                                                                                            case -56:
+                                                                                                                                if (WlanProbe.this.mDualProbeId0 < 0) {
+                                                                                                                                    WlanProbe.this.mDualProbeId0 = poll.Data[0] & 255;
+                                                                                                                                    WlanProbe.this.mDualProbeId1 = poll.Data[1] & Byte.MAX_VALUE;
+                                                                                                                                    WlanProbe.this.mDualActive = poll.Data[2] & 255;
+                                                                                                                                    if (WlanProbe.this.mDualActive == 0) {
+                                                                                                                                        WlanProbe.this.mProbeId = Integer.valueOf(WlanProbe.this.mDualProbeId0);
+                                                                                                                                    } else {
+                                                                                                                                        WlanProbe.this.mProbeId = Integer.valueOf(WlanProbe.this.mDualProbeId1);
+                                                                                                                                    }
+                                                                                                                                } else {
+                                                                                                                                    WlanProbe.this.mDualProbeId0 = poll.Data[0] & 255;
+                                                                                                                                    WlanProbe.this.mDualProbeId1 = poll.Data[1] & Byte.MAX_VALUE;
+                                                                                                                                }
+                                                                                                                                WlanProbe.this.SetProbeStyle(1);
+//                                                                                                                                if (!AppProc.Instance().mWifiProbeSelect.isAdded() && !AppProc.Instance().mUsbProbeConnectDlgFrag.isAdded()) {
+//                                                                                                                                    if (WlanProbe.this.m_AutoRun) {
+//                                                                                                                                        if (WlanProbe.this.mDualActive == 0) {
+//                                                                                                                                            WlanProbe.this.mProbeId = Integer.valueOf(WlanProbe.this.mDualProbeId0);
+//                                                                                                                                        } else {
+//                                                                                                                                            WlanProbe.this.mProbeId = Integer.valueOf(WlanProbe.this.mDualProbeId1);
+//                                                                                                                                        }
+//                                                                                                                                        WlanProbe.this.m_AutoRun = false;
+//                                                                                                                                        Ultrasys.Instance().UnFreeze(true);
+//                                                                                                                                    }
+//                                                                                                                                    if ((Ultrasys.Instance().GetProbeConType() != 5 || Ultrasys.Instance().GetProbeConType() == 4) && Ultrasys.Instance().mIsUnFreeState && WlanProbe.this.mProbeId.intValue() == 0) {
+//                                                                                                                                        AppProc.Instance().FuncIdProc(181);
+//                                                                                                                                    }
+//                                                                                                                                    WlanProbe.this.mProbeIdObservable.setChanged();
+//                                                                                                                                    WlanProbe.this.mProbeIdObservable.notifyObservers(WlanProbe.this.mProbeId);
+//                                                                                                                                    break;
+//                                                                                                                                }
+                                                                                                                                Ultrasys.Instance().CheckProbeChange(WlanProbe.this.mProbeId.intValue(), false);
+                                                                                                                                if (Ultrasys.Instance().GetProbeConType() != 5) {
+                                                                                                                                }
+                                                                                                                                AppProc.Instance().FuncIdProc(181);
+                                                                                                                                WlanProbe.this.mProbeIdObservable.setChanged();
+                                                                                                                                WlanProbe.this.mProbeIdObservable.notifyObservers(WlanProbe.this.mProbeId);
+                                                                                                                                break;
+                                                                                                                            case -16:
+                                                                                                                                i = poll.Data[0] & 255;
+                                                                                                                                if (WlanProbe.this.mProbeId.intValue() != i) {
+                                                                                                                                }
+                                                                                                                                break;
+                                                                                                                            case 2:
+                                                                                                                                int i8 = poll.Data[0] & 255;
+                                                                                                                                Ultrasys.Instance().SetCmdExecuting(false);
+                                                                                                                                if (i8 > 0) {
+                                                                                                                                    Ultrasys.Instance().Freeze();
+                                                                                                                                    break;
+                                                                                                                                } else {
+                                                                                                                                    Ultrasys.Instance().UnFreeze(true);
+                                                                                                                                    break;
+                                                                                                                                }
+                                                                                                                            case 4:
+                                                                                                                                Ultrasys.Instance().SetDepth(poll.Data[0] & 255);
+                                                                                                                                break;
+                                                                                                                            case 43:
+                                                                                                                                Ultrasys.Instance().SetPowerColorMap(poll.Data[0] & 255);
+                                                                                                                                break;
+                                                                                                                            case 86:
+                                                                                                                                Ultrasys.Instance().SetPresetParam(poll.Data, poll.Data.length);
+                                                                                                                                break;
+                                                                                                                            case 94:
+                                                                                                                                Ultrasys.Instance().setMITISData(poll.Data, poll.Data.length);
+                                                                                                                                break;
+                                                                                                                            case 96:
+                                                                                                                                Integer valueOf = Integer.valueOf(poll.Data[0]);
+                                                                                                                                Log.i("W_ENCMODE_CMD", "encMode = " + valueOf);
+                                                                                                                                WlanProbe.this.mEncModeObservable.setChanged();
+                                                                                                                                WlanProbe.this.mEncModeObservable.notifyObservers(valueOf);
+                                                                                                                                break;
+                                                                                                                            case 98:
+                                                                                                                                if ((poll.Data[0] & 255) == 0) {
+                                                                                                                                    Ultrasys.Instance().SetDicomAuth(false);
+                                                                                                                                } else {
+                                                                                                                                    Ultrasys.Instance().SetDicomAuth(true);
+                                                                                                                                }
+                                                                                                                                if (poll.Data.length >= 3) {
+//                                                                                                                                    boolean z3 = poll.Data[1] & 255;
+//                                                                                                                                    boolean z4 = poll.Data[2] & 255;
+//                                                                                                                                    if (z3 == 0) {
+//                                                                                                                                        Ultrasys.Instance().SetPwAuth(false);
+//                                                                                                                                    } else {
+//                                                                                                                                        Ultrasys.Instance().SetPwAuth(true);
+//                                                                                                                                    }
+//                                                                                                                                    if (z4 == 0) {
+//                                                                                                                                        Ultrasys.Instance().SetColorAuth(false);
+//                                                                                                                                    } else {
+//                                                                                                                                        Ultrasys.Instance().SetColorAuth(true);
+//                                                                                                                                    }
+//                                                                                                                                    if (poll.Data.length >= 4) {
+//                                                                                                                                        int i9 = poll.Data[3] & 255;
+//                                                                                                                                        Ultrasys Instance2 = Ultrasys.Instance();
+//                                                                                                                                        if (i9 > 0) {
+//                                                                                                                                            z = true;
+//                                                                                                                                        }
+//                                                                                                                                        Instance2.SetHumanVetAuth(z);
+//                                                                                                                                        break;
+//                                                                                                                                    }
+                                                                                                                                } else {
+                                                                                                                                    Ultrasys.Instance().SetPwAuth(true);
+                                                                                                                                    Ultrasys.Instance().SetColorAuth(true);
+                                                                                                                                    break;
+                                                                                                                                }
+                                                                                                                                break;
+                                                                                                                            case 103:
+                                                                                                                                HostWlanProbe.Instance().AddtoHostList(new String(poll.Data));
+                                                                                                                                break;
+                                                                                                                        }
+                                                                                                                }
+                                                                                                        }
+                                                                                                }
+                                                                                        }
+                                                                                }
+                                                                        }
+                                                                }
+                                                        }
+                                                }
+                                        }
+                                }
+                        }
+                        if (WlanProbe.this.mMsgHook != null) {
+                            WlanProbe.this.mMsgHook.OnMessage(poll);
+                        }
+                    }
+                }
             }
         };
         this.mTempObservable = new HObservable();
